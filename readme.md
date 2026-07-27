@@ -1,23 +1,23 @@
-# X5 python SDK\-V2
+# X5 python SDK-V2
 
 <div align="center">
-  <img src="images/image_6.png" width="600" alt="X5 机械臂">
+  <img src="images/image_6.png" width="600" alt="X5 robotic arm">
 </div>
 
-使用机械臂时，务必确保安装稳定，以基座为轴心一米半径内确保空旷，当心碰撞易碎物品及造成人员损伤。出现紧急情况请先关闭电源。
+When operating the robotic arm, make sure it is mounted securely and keep a clear area within a 1.5 m radius around the base. Watch out for collisions with fragile objects and for the risk of personal injury. In an emergency, cut the power first.
 
 
 
-只支持ubuntu24\.04    python \>3\.8
+Only Ubuntu 24.04 is supported    python >3.8
 
-# 型号区分
+# Model variants
 
-|型号||示意图|区别|
+|Model||Illustration|Difference|
 |---|---|---|---|
-|X5（2023）|标准单臂<br>|<img src="images/image_3.png" width="280" alt="X5 2023">|单轨二指夹爪|
-|X5（2025）<br>|AC one上机械臂<br>|<img src="images/image_2.png" width="280" alt="X5 2025">|双轨二指夹爪|
+|X5 (2023)|Standard single arm<br>|<img src="images/image_3.png" width="280" alt="X5 2023">|Single-rail two-finger gripper|
+|X5 (2025)<br>|Arm on the AC one<br>|<img src="images/image_2.png" width="280" alt="X5 2025">|Dual-rail two-finger gripper|
 
-代码中，arm\_cinfig为机械臂参数信息，进入xx\_demo\.py根据具体型号切换type值。
+In the code, `arm_config` holds the arm parameters. Open `xx_demo.py` and switch the `type` value according to your model.
 
 ```Python
 arm_config: Dict[str, Any] = {
@@ -27,174 +27,171 @@ arm_config: Dict[str, Any] = {
     }
 ```
 
-# 00硬件设备连接
+# 00 Hardware connection
 
 <div align="center">
-  <img src="images/image_8.png" width="420" alt="硬件连接示意图">
+  <img src="images/image_8.png" width="420" alt="Hardware connection diagram">
 </div>
 
 <div align="center">
-  <img src="images/image_4.png" width="600" alt="硬件连接实物图">
+  <img src="images/image_4.png" width="600" alt="Hardware connection photo">
 </div>
 
-# 00环境配置
+# 00 Environment setup
 
 ```Plain Text
 sudo apt update
 ./01_global_nopasswd_sudo.sh.x
-./setup.sh        # 装依赖（--mirror 用清华源，国内强烈建议）
+./setup.sh        
 ```
 
-# A CAN设备
+# A CAN devices
 
-## 配置CAN设备
+## Configuring a CAN device
 
-设备如未更改，只需配置一次即可
+Unless the device is changed, this only has to be done once.
 
-多个设备设置时，需要逐个操作。配置完目标后，可以不拔插，直接插入另一个目标进行设置。
+When setting up multiple devices, do them one at a time. After configuring one target, you can leave it plugged in and simply plug in the next target to configure it.
 
-逐个插入的目的是区分对应机械臂。左臂建议can1,右臂can3
+Plugging them in one by one is what lets you tell the arms apart. can1 is recommended for the left arm, can3 for the right arm.
 
-/ARX\_CAN\_doctor 双击启动
-
-<div align="center">
-  <img src="images/image_5.png" width="500" alt="CAN doctor 界面">
-</div>
-
-左臂建议can1,右臂can3
+Double-click /ARX_CAN_doctor to launch it
 
 <div align="center">
-  <img src="images/image_10.png" width="500" alt="CAN 配置选择">
+  <img src="images/image_5.png" width="500" alt="CAN doctor UI">
 </div>
 
-点击配置后等待日志输出成功配置即可
+can1 is recommended for the left arm, can3 for the right arm
 
 <div align="center">
-  <img src="images/image_9.png" width="420" alt="配置成功日志">
+  <img src="images/image_10.png" width="500" alt="CAN configuration selection">
 </div>
 
-依次类推设置其他can设备
-
-## 启动can设备
-
-### 方式A
-
-依次点击doctor中can需要旁边的配置按钮，会进行配置及启动。在can设备不与电脑断连的前提下不会失效。
+After clicking Configure, wait until the log reports a successful configuration.
 
 <div align="center">
-  <img src="images/image_1.png" width="500" alt="CAN 启动按钮">
+  <img src="images/image_9.png" width="420" alt="Successful configuration log">
 </div>
 
-### 方式B
+Repeat for the remaining CAN devices.
 
-进入/start\_CAN目录，启动对应序号
+## Starting a CAN device
+
+### Method A
+
+Click the Configure button next to the CAN device you need in the doctor; this both configures and starts it. It stays valid as long as the CAN device is not disconnected from the computer.
+
+<div align="center">
+  <img src="images/image_1.png" width="500" alt="CAN start button">
+</div>
+
+### Method B
+
+Go into the /start_CAN directory and launch the matching index
 
 ```Plain Text
 ./arx_can1
 
-//如双臂再启动
+//for a dual-arm setup, also launch
 ./arx_can3
 ```
 
-# B 运行
+# B Running
 
 ```Plain Text
-单臂启动为
+Single arm:
 python3 single_arm_demo.py
 
-双臂启动为
+Dual arm:
 python3 dual_arm_demo.py
 ```
 
 # SDK
 
-## 0\>夹爪控制
+## 0> Gripper control
 
-set\_gripper\_pos\(\)  
+set_gripper_pos()
 
-|类型|夹爪范围|
+|Type|Gripper range|
 |---|---|
-|X5\-2023|0,5|
-|X5\-2025|\-3\.14，0\.1|
+|X5-2023|0, 5|
+|X5-2025|-3.14, 0.1|
 
-## 1\>姿态控制
+## 1> Pose control
 
-set\_ee\_pose\_xyzrpy\(xyzrpy,duration=0\)//duraton为到达目标时间，0为最快速度达到，单位s
+set_ee_pose_xyzrpy(xyzrpy, duration=0) // duration is the time to reach the target; 0 means reach it at maximum speed, in seconds
 
-## 2\>关节位置控制（底层重力补偿）
+## 2> Joint position control (low-level gravity compensation)
 
-set\_joint\_positions\(positions=positions,duration=0\) //duraton为到达目标时间，0为最快速度达到，单位s
+set_joint_positions(positions=positions, duration=0) // duration is the time to reach the target; 0 means reach it at maximum speed, in seconds
 
-## 3\>状态反馈
+## 3> State feedback
 
-关节反馈（位置，速度，扭矩）\+姿态反馈
+Joint feedback (position, velocity, torque) + pose feedback
 
-### 3\.1 关节位置反馈
+### 3.1 Joint position feedback
 
-get\_joint\_positions\(\)
+get_joint_positions()
 
-### 3\.2 关节速度反馈
+### 3.2 Joint velocity feedback
 
-get\_joint\_velocities\(\)
+get_joint_velocities()
 
-### 3\.3 关节扭矩反馈
+### 3.3 Joint torque feedback
 
-get\_joint\_currents\(\)
+get_joint_currents()
 
-### 3\.4 末端位姿反馈
+### 3.4 End-effector pose feedback
 
-get\_ee\_pose\_xyzrpy\(\) 欧拉角形式
+get_ee_pose_xyzrpy() in Euler-angle form
 
-## 4\>重力补偿
+## 4> Gravity compensation
 
-gravity\_compensation\(\)
+gravity_compensation()
 
-默认值仅含夹爪。加装摄像头等设备后，如遇到末端坠落，或者抬升。请参照\<5\>更改末端质量
+The default value accounts for the gripper only. After mounting a camera or other equipment, if the end effector drifts down or lifts up, change the end-effector mass as described in <5>.
 
-若抬升，请调低数值
+If it lifts up, lower the value.
 
-若下降，请调高数值
+If it drops, raise the value.
 
-## 5\>更改末端质量
+## 5> Changing the end-effector mass
 
 Change link6 mass
 
 Remember to save
 
 <div align="center">
-  <img src="images/image.png" width="450" alt="更改末端质量">
+  <img src="images/image.png" width="450" alt="Changing the end-effector mass">
 </div>
 
-若抬升，请调低数值。
+If it lifts up, lower the value.
 
-若下降，请调高数值。
+If it drops, raise the value.
 
-## 6\>原点位置
+## 6> Home position
 
-### 关节轴向及零点位置
+### Joint axes and zero position
 
 <div align="center">
-  <img src="images/image_7.png" width="600" alt="关节轴向及零点位置">
+  <img src="images/image_7.png" width="600" alt="Joint axes and zero position">
 </div>
 
-关节转向符合右手定理，大拇指的指向关节轴向，四指方向就是电机转动的正方向。
+Joint rotation follows the right-hand rule: the thumb points along the joint axis, and the four fingers point in the positive direction of motor rotation.
 
-此位置为各关节零位。
+This position is the zero position of every joint.
 
-### 关节范围
+### Joint ranges
 
-|单位度|J1<br>|J2|J3|J4|J5|J6|2023\-gripper<br>rad|2025\-gripper<br>rad|
+|Unit: degrees|J1<br>|J2|J3|J4|J5|J6|2023-gripper<br>rad|2025-gripper<br>rad|
 |---|---|---|---|---|---|---|---|---|
-|min|\-150|0|0|\-90|\-90|\-120|0|\-3\.4|
-|max|180|210|180|90|90|120|5|0\.1|
+|min|-150|0|0|-90|-90|-120|0|-3.4|
+|max|180|210|180|90|90|120|5|0.1|
 
-### 末端坐标系
+### End-effector frame
 
 <div align="center">
-  <img src="images/image_11.png" width="600" alt="末端坐标系">
+  <img src="images/image_11.png" width="600" alt="End-effector frame">
 </div>
 
-在初始位置，末端坐标系和参考坐标系重合，位置和姿态都是0，如上图所示。
-
-
-
+At the initial position the end-effector frame coincides with the reference frame, so both position and orientation are 0, as shown above.
