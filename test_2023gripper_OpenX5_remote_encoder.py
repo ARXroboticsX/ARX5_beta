@@ -62,8 +62,8 @@ if __name__ == "__main__":
     master_left_config: Dict[str, Any] = {"can_port": "can2"}
     master_right_config: Dict[str, Any] = {"can_port": "can4"}
     # 0>2023  2>2025  3>A5
-    slave_left_config: Dict[str, Any] = {"can_port": "can1", "type": 1}
-    slave_right_config: Dict[str, Any] = {"can_port": "can3", "type": 1}
+    slave_left_config: Dict[str, Any] = {"can_port": "can1", "type": 0}
+    slave_right_config: Dict[str, Any] = {"can_port": "can3", "type": 0}
 
     _built = []
     try:
