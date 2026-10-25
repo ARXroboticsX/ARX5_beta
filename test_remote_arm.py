@@ -43,10 +43,10 @@ def test_remote_arm(master_left: SingleArm, master_right: SingleArm,
 if __name__ == "__main__":
 
     # 0>2023  2>2025  3>A5
-    master_left_config: Dict[str, Any] = {"can_port": "can2", "type": 3}
-    master_right_config: Dict[str, Any] = {"can_port": "can4", "type": 3}
-    slave_left_config: Dict[str, Any] = {"can_port": "can1", "type": 3}
-    slave_right_config: Dict[str, Any] = {"can_port": "can3", "type": 3}
+    master_left_config: Dict[str, Any] = {"can_port": "can2", "type": 2}
+    master_right_config: Dict[str, Any] = {"can_port": "can4", "type": 2}
+    slave_left_config: Dict[str, Any] = {"can_port": "can1", "type": 2}
+    slave_right_config: Dict[str, Any] = {"can_port": "can3", "type": 2}
 
     _built = []
     try:
